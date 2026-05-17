@@ -3,22 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drive Survival X</title>
+<title>Drive Survival</title>
 
 <style>
 body{
   margin:0;
   overflow:hidden;
   font-family:Arial,sans-serif;
-  background:#070712;
+  background:radial-gradient(circle at top,#2d2d66,#090914 55%,#050509);
   color:white;
 }
 
 #game{
-  position:relative;
   width:100vw;
   height:100vh;
-  background:radial-gradient(circle at top,#25255c,#080812 60%);
+  position:relative;
   overflow:hidden;
 }
 
@@ -27,51 +26,59 @@ body{
   top:0;
   left:50%;
   transform:translateX(-50%);
-  width:350px;
+  width:340px;
   height:100vh;
-  background:#333341;
+  background:linear-gradient(90deg,#1d1d27,#363646,#1d1d27);
   border-left:5px solid #ff2d75;
   border-right:5px solid #00e5ff;
   overflow:hidden;
-  box-shadow:0 0 35px rgba(0,229,255,.25);
+  box-shadow:0 0 35px rgba(0,229,255,.28);
 }
 
 .line{
   position:absolute;
   left:50%;
+  transform:translateX(-50%);
   width:10px;
   height:85px;
-  background:white;
+  background:#fff;
   border-radius:20px;
-  transform:translateX(-50%);
-  box-shadow:0 0 15px #00e5ff;
+  box-shadow:0 0 14px #00e5ff;
 }
 
 #player{
   position:absolute;
-  bottom:80px;
+  bottom:105px;
   left:50%;
   transform:translateX(-50%);
-  font-size:64px;
+  font-size:62px;
   z-index:10;
-  filter:drop-shadow(0 0 20px #00e5ff);
+  filter:drop-shadow(0 0 18px #00e5ff);
 }
 
-.enemy,.coin,.laser,.power{
+.enemy,.coin,.laser{
   position:absolute;
-  z-index:8;
 }
 
-.enemy{font-size:56px}
-.coin{font-size:34px}
-.power{font-size:38px}
+.enemy{
+  font-size:54px;
+  z-index:8;
+  filter:drop-shadow(0 0 12px #ff2d75);
+}
+
+.coin{
+  font-size:34px;
+  z-index:8;
+  filter:drop-shadow(0 0 10px gold);
+}
 
 .laser{
   width:8px;
-  height:38px;
+  height:36px;
   background:#00e5ff;
   border-radius:20px;
-  box-shadow:0 0 20px #00e5ff;
+  box-shadow:0 0 18px #00e5ff;
+  z-index:9;
 }
 
 #hud{
@@ -82,11 +89,11 @@ body{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:8px;
-  z-index:30;
+  z-index:50;
 }
 
 .box{
-  background:rgba(255,255,255,.13);
+  background:rgba(255,255,255,.15);
   backdrop-filter:blur(10px);
   padding:10px;
   border-radius:16px;
@@ -99,7 +106,7 @@ body{
   position:fixed;
   inset:0;
   z-index:100;
-  background:linear-gradient(180deg,#15152a,#050509);
+  background:linear-gradient(180deg,#16162f,#050509);
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -114,6 +121,7 @@ body{
 
 .logo{
   font-size:110px;
+  filter:drop-shadow(0 0 25px #00e5ff);
   animation:float 2s infinite;
 }
 
@@ -122,143 +130,79 @@ body{
 }
 
 h1{
-  font-size:42px;
+  font-size:44px;
   margin:10px;
 }
 
 p{
   color:#ddd;
-  max-width:340px;
+  max-width:330px;
 }
 
 button{
   border:0;
   border-radius:999px;
-  padding:15px 24px;
+  padding:15px 25px;
   font-size:17px;
   font-weight:900;
-  color:white;
   background:linear-gradient(135deg,#ff2d75,#ff7aa2);
-  margin:6px;
+  color:white;
   cursor:pointer;
-}
-
-.secondary{
-  background:rgba(255,255,255,.15);
+  margin-top:10px;
 }
 
 .controls{
   position:fixed;
-  bottom:22px;
-  left:0;
-  right:0;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
   display:flex;
-  justify-content:space-between;
-  padding:0 24px;
-  z-index:40;
-  pointer-events:none;
+  gap:18px;
+  z-index:60;
 }
 
 .ctrl{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:rgba(255,255,255,.15);
+  width:82px;
+  height:82px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#1f1f2d,#34344a);
+  border:2px solid rgba(255,255,255,.12);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:30px;
-  pointer-events:auto;
+  font-size:34px;
+  box-shadow:0 12px 24px rgba(0,0,0,.35);
   user-select:none;
 }
 
-#shoot,#nitro{
+#shoot{
   position:fixed;
-  bottom:105px;
-  width:72px;
-  height:72px;
+  bottom:115px;
+  left:50%;
+  transform:translateX(-50%);
+  width:70px;
+  height:70px;
   border-radius:50%;
   background:#111;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:30px;
-  z-index:40;
-}
-
-#shoot{
-  left:50%;
-  transform:translateX(-50%);
-}
-
-#nitro{
-  right:24px;
-}
-
-#shop{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  z-index:130;
-  padding:20px;
-  overflow:auto;
-}
-
-.shopCard{
-  background:white;
-  color:#111;
-  max-width:430px;
-  margin:auto;
-  border-radius:28px;
-  padding:20px;
-  text-align:center;
-}
-
-.upgrade{
-  background:#f2f2f2;
-  border-radius:18px;
-  padding:12px;
-  margin:10px 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.buy{
-  background:#111;
-  color:white;
-  padding:10px 14px;
-  font-size:14px;
+  z-index:60;
+  box-shadow:0 0 20px rgba(0,229,255,.4);
 }
 
 .pop{
   position:absolute;
-  z-index:80;
   font-size:24px;
   font-weight:900;
   animation:pop .6s forwards;
+  z-index:80;
 }
 
 @keyframes pop{
   from{opacity:1;transform:translateY(0) scale(1)}
-  to{opacity:0;transform:translateY(-40px) scale(1.4)}
-}
-
-.explosion{
-  position:absolute;
-  z-index:90;
-  font-size:55px;
-  animation:boom .45s forwards;
-}
-
-@keyframes boom{
-  from{opacity:1;transform:scale(.6)}
-  to{opacity:0;transform:scale(1.8)}
-}
-
-.shieldGlow{
-  filter:drop-shadow(0 0 25px #00e5ff);
+  to{opacity:0;transform:translateY(-35px) scale(1.4)}
 }
 </style>
 </head>
@@ -269,51 +213,42 @@ button{
   <div id="road"></div>
 
   <div id="hud">
-    <div class="box">🏁 ניקוד: <span id="score">0</span></div>
-    <div class="box">🪙 מטבעות: <span id="coins">0</span></div>
-    <div class="box">❤️ חיים: <span id="lives">3</span></div>
+    <div class="box">🏁 <span id="score">0</span></div>
+    <div class="box">🪙 <span id="coins">0</span></div>
+    <div class="box">❤️ <span id="lives">3</span></div>
   </div>
 
   <div id="player">🏎️</div>
 
-  <div class="controls">
-    <div class="ctrl" ontouchstart="left=true" ontouchend="left=false" onmousedown="left=true" onmouseup="left=false">⬅️</div>
-    <div class="ctrl" ontouchstart="right=true" ontouchend="right=false" onmousedown="right=true" onmouseup="right=false">➡️</div>
-  </div>
-
   <div id="shoot" onclick="shootLaser()">🔫</div>
-  <div id="nitro" onclick="useNitro()">⚡</div>
+
+  <div class="controls">
+    <div class="ctrl"
+      ontouchstart="left=true"
+      ontouchend="left=false"
+      onmousedown="left=true"
+      onmouseup="left=false">⬅️</div>
+
+    <div class="ctrl"
+      ontouchstart="right=true"
+      ontouchend="right=false"
+      onmousedown="right=true"
+      onmouseup="right=false">➡️</div>
+  </div>
 </div>
 
 <div id="start" class="screen">
   <div class="logo">🏎️</div>
-  <h1>Drive Survival X</h1>
-  <p>אסוף מטבעות, התחמק מאויבים, קנה שדרוגים ותשתמש בלייזר וניטרו.</p>
-  <button onclick="startGame()">▶️ התחל משחק</button>
-  <button class="secondary" onclick="openShop()">🛒 חנות</button>
+  <h1>Drive Survival</h1>
+  <p>תאסוף מטבעות, תתחמק ממכוניות ותירה בלייזר.</p>
+  <button onclick="startGame()">התחל משחק</button>
 </div>
 
 <div id="gameOver" class="screen">
   <div class="logo">💥</div>
-  <h1>התנגשת!</h1>
-  <p>הניקוד שלך: <b id="finalScore">0</b></p>
-  <button onclick="restartGame()">🔁 שחק שוב</button>
-  <button class="secondary" onclick="openShop()">🛒 חנות</button>
-</div>
-
-<div id="shop">
-  <div class="shopCard">
-    <h1>🛒 חנות</h1>
-    <p>יש לך <b id="shopCoins">0</b> מטבעות</p>
-
-    <div class="upgrade"><div>⚡ מנוע מהיר<br><small>25 מטבעות</small></div><button class="buy" onclick="buyUpgrade('speed',25)">קנה</button></div>
-    <div class="upgrade"><div>❤️ עוד חיים<br><small>40 מטבעות</small></div><button class="buy" onclick="buyUpgrade('life',40)">קנה</button></div>
-    <div class="upgrade"><div>🔫 לייזר<br><small>80 מטבעות</small></div><button class="buy" onclick="buyUpgrade('laser',80)">קנה</button></div>
-    <div class="upgrade"><div>🛡️ מגן<br><small>120 מטבעות</small></div><button class="buy" onclick="buyUpgrade('shield',120)">קנה</button></div>
-    <div class="upgrade"><div>🧲 מגנט<br><small>150 מטבעות</small></div><button class="buy" onclick="buyUpgrade('magnet',150)">קנה</button></div>
-
-    <button onclick="closeShop()">סגור</button>
-  </div>
+  <h1>המשחק נגמר</h1>
+  <p>הניקוד שלך: <span id="finalScore">0</span></p>
+  <button onclick="restartGame()">שחק שוב</button>
 </div>
 
 <script>
@@ -321,32 +256,22 @@ const road=document.getElementById("road");
 const player=document.getElementById("player");
 
 let score=0;
-let coins=Number(localStorage.getItem("driveCoins")) || 0;
+let coins=0;
 let lives=3;
 
-let carX=window.innerWidth/2;
+let speed=3.2;
+let playerSpeed=5;
+
+let playerX=window.innerWidth/2;
 let left=false;
 let right=false;
 let running=false;
 
-let speed=4.5;
-let playerSpeed=6.5;
-let nitro=false;
-
 let enemyTimer;
 let coinTimer;
-let powerTimer;
-
-let upgrades=JSON.parse(localStorage.getItem("driveUpgrades")) || {
-  speed:0,
-  life:0,
-  laser:false,
-  shield:false,
-  magnet:false
-};
 
 for(let i=0;i<9;i++){
-  let line=document.createElement("div");
+  const line=document.createElement("div");
   line.className="line";
   line.style.top=(i*125)+"px";
   road.appendChild(line);
@@ -356,36 +281,6 @@ function updateUI(){
   document.getElementById("score").innerText=score;
   document.getElementById("coins").innerText=coins;
   document.getElementById("lives").innerText=lives;
-  document.getElementById("shopCoins").innerText=coins;
-}
-
-updateUI();
-
-function roadBounds(){
-  let roadLeft=(window.innerWidth-350)/2;
-  return {
-    left:roadLeft+40,
-    right:roadLeft+310
-  };
-}
-
-function resetGame(){
-  document.querySelectorAll(".enemy,.coin,.laser,.power,.pop,.explosion").forEach(e=>e.remove());
-
-  score=0;
-  lives=3+upgrades.life;
-  speed=4.5;
-  playerSpeed=6.5+(upgrades.speed*1.2);
-  carX=window.innerWidth/2;
-  nitro=false;
-
-  if(upgrades.shield){
-    player.classList.add("shieldGlow");
-  }else{
-    player.classList.remove("shieldGlow");
-  }
-
-  updateUI();
 }
 
 function startGame(){
@@ -393,84 +288,72 @@ function startGame(){
   resetGame();
   running=true;
 
-  enemyTimer=setInterval(createEnemy,850);
-  coinTimer=setInterval(createCoin,620);
-  powerTimer=setInterval(createPower,6500);
+  enemyTimer=setInterval(createEnemy,1100);
+  coinTimer=setInterval(createCoin,850);
 
   requestAnimationFrame(loop);
 }
 
 function restartGame(){
-  document.getElementById("gameOver").style.display="none";
-  resetGame();
-  running=true;
+  location.reload();
+}
 
-  enemyTimer=setInterval(createEnemy,850);
-  coinTimer=setInterval(createCoin,620);
-  powerTimer=setInterval(createPower,6500);
+function resetGame(){
+  score=0;
+  coins=0;
+  lives=3;
+  speed=3.2;
+  playerSpeed=5;
+  playerX=window.innerWidth/2;
+  updateUI();
+}
 
-  requestAnimationFrame(loop);
+function roadBounds(){
+  const roadLeft=(window.innerWidth-340)/2;
+  return {
+    left:roadLeft+45,
+    right:roadLeft+295
+  };
 }
 
 function createEnemy(){
   if(!running)return;
 
-  let e=document.createElement("div");
-  e.className="enemy";
-  e.innerText=["🚙","🚕","🚓","🚚","👾"][Math.floor(Math.random()*5)];
+  const enemy=document.createElement("div");
+  enemy.className="enemy";
+  enemy.innerText=["🚙","🚕","🚓","🚚"][Math.floor(Math.random()*4)];
 
-  let b=roadBounds();
-  e.style.left=(b.left+Math.random()*(b.right-b.left-45))+"px";
-  e.style.top="-80px";
+  const b=roadBounds();
+  enemy.style.left=(b.left+Math.random()*(b.right-b.left-45))+"px";
+  enemy.style.top="-80px";
 
-  document.getElementById("game").appendChild(e);
+  document.getElementById("game").appendChild(enemy);
 }
 
 function createCoin(){
   if(!running)return;
 
-  let c=document.createElement("div");
-  c.className="coin";
-  c.innerText=Math.random()<0.15 ? "💎" : "🪙";
-  c.dataset.value=c.innerText==="💎" ? 5 : 1;
+  const coin=document.createElement("div");
+  coin.className="coin";
+  coin.innerText=Math.random()<0.18 ? "💎" : "🪙";
+  coin.dataset.value=coin.innerText==="💎" ? 5 : 1;
 
-  let b=roadBounds();
-  c.style.left=(b.left+Math.random()*(b.right-b.left-32))+"px";
-  c.style.top="-55px";
+  const b=roadBounds();
+  coin.style.left=(b.left+Math.random()*(b.right-b.left-35))+"px";
+  coin.style.top="-60px";
 
-  document.getElementById("game").appendChild(c);
-}
-
-function createPower(){
-  if(!running)return;
-
-  let p=document.createElement("div");
-  p.className="power";
-  p.innerText=["🛡️","❤️","⚡"][Math.floor(Math.random()*3)];
-
-  let b=roadBounds();
-  p.style.left=(b.left+Math.random()*(b.right-b.left-36))+"px";
-  p.style.top="-60px";
-
-  document.getElementById("game").appendChild(p);
+  document.getElementById("game").appendChild(coin);
 }
 
 function shootLaser(){
-  if(!running || !upgrades.laser)return;
-
-  let l=document.createElement("div");
-  l.className="laser";
-  l.style.left=carX+"px";
-  l.style.top=(window.innerHeight-160)+"px";
-
-  document.getElementById("game").appendChild(l);
-}
-
-function useNitro(){
   if(!running)return;
 
-  nitro=true;
-  setTimeout(()=>nitro=false,1000);
+  const laser=document.createElement("div");
+  laser.className="laser";
+  laser.style.left=playerX+"px";
+  laser.style.top=(window.innerHeight-170)+"px";
+
+  document.getElementById("game").appendChild(laser);
 }
 
 function hit(a,b){
@@ -478,7 +361,7 @@ function hit(a,b){
 }
 
 function pop(x,y,text){
-  let p=document.createElement("div");
+  const p=document.createElement("div");
   p.className="pop";
   p.innerText=text;
   p.style.left=x+"px";
@@ -487,214 +370,120 @@ function pop(x,y,text){
   setTimeout(()=>p.remove(),600);
 }
 
-function boom(x,y){
-  let b=document.createElement("div");
-  b.className="explosion";
-  b.innerText="💥";
-  b.style.left=x+"px";
-  b.style.top=y+"px";
-  document.getElementById("game").appendChild(b);
-  setTimeout(()=>b.remove(),450);
-}
-
 function loop(){
   if(!running)return;
 
-  let activeSpeed=playerSpeed+(nitro?4:0);
+  if(left)playerX-=playerSpeed;
+  if(right)playerX+=playerSpeed;
 
-  if(left)carX-=activeSpeed;
-  if(right)carX+=activeSpeed;
+  const b=roadBounds();
 
-  let b=roadBounds();
+  if(playerX<b.left)playerX=b.left;
+  if(playerX>b.right)playerX=b.right;
 
-  if(carX<b.left)carX=b.left;
-  if(carX>b.right)carX=b.right;
-
-  player.style.left=carX+"px";
+  player.style.left=playerX+"px";
 
   moveRoad();
-  moveCoins();
   moveEnemies();
+  moveCoins();
   moveLasers();
-  movePowers();
 
   requestAnimationFrame(loop);
 }
 
 function moveRoad(){
   document.querySelectorAll(".line").forEach(line=>{
-    let y=line.offsetTop+speed+(nitro?3:0);
+    let y=line.offsetTop+speed;
     if(y>window.innerHeight)y=-100;
     line.style.top=y+"px";
   });
 }
 
-function moveCoins(){
-  document.querySelectorAll(".coin").forEach(c=>{
-    let y=c.offsetTop+speed;
+function moveEnemies(){
+  document.querySelectorAll(".enemy").forEach(enemy=>{
+    let y=enemy.offsetTop+speed;
+    enemy.style.top=y+"px";
 
-    if(upgrades.magnet){
-      let dx=carX-c.offsetLeft;
-      if(Math.abs(dx)<120){
-        c.style.left=(c.offsetLeft+dx*0.08)+"px";
-      }
-    }
-
-    c.style.top=y+"px";
-
-    if(hit(c.getBoundingClientRect(),player.getBoundingClientRect())){
-      let val=Number(c.dataset.value);
-      coins+=val;
-      score+=val;
-
-      localStorage.setItem("driveCoins",coins);
-
-      pop(c.offsetLeft,c.offsetTop,"+"+val+" 🪙");
-      c.remove();
+    if(hit(enemy.getBoundingClientRect(),player.getBoundingClientRect())){
+      enemy.remove();
+      lives--;
+      pop(player.offsetLeft,player.offsetTop,"-1 ❤️");
       updateUI();
 
-      if(score%25===0)speed+=0.35;
-    }
-
-    if(y>window.innerHeight)c.remove();
-  });
-}
-
-function moveEnemies(){
-  document.querySelectorAll(".enemy").forEach(e=>{
-    let y=e.offsetTop+(speed+0.7);
-    e.style.top=y+"px";
-
-    if(hit(e.getBoundingClientRect(),player.getBoundingClientRect())){
-      boom(e.offsetLeft,e.offsetTop);
-      e.remove();
-
-      if(upgrades.shield){
-        upgrades.shield=false;
-        player.classList.remove("shieldGlow");
-        localStorage.setItem("driveUpgrades",JSON.stringify(upgrades));
-        pop(player.offsetLeft,player.offsetTop,"מגן 🛡️");
-      }else{
-        lives--;
-        updateUI();
-
-        if(lives<=0){
-          endGame();
-        }
+      if(lives<=0){
+        endGame();
       }
     }
 
     if(y>window.innerHeight){
-      e.remove();
+      enemy.remove();
       score++;
       updateUI();
 
-      if(score%18===0)speed+=0.35;
+      if(score%12===0){
+        speed+=0.25;
+      }
+    }
+  });
+}
+
+function moveCoins(){
+  document.querySelectorAll(".coin").forEach(coin=>{
+    let y=coin.offsetTop+speed;
+    coin.style.top=y+"px";
+
+    if(hit(coin.getBoundingClientRect(),player.getBoundingClientRect())){
+      let val=Number(coin.dataset.value);
+      coin.remove();
+
+      coins+=val;
+      score+=val;
+      pop(coin.offsetLeft,coin.offsetTop,"+"+val+" 🪙");
+      updateUI();
+    }
+
+    if(y>window.innerHeight){
+      coin.remove();
     }
   });
 }
 
 function moveLasers(){
-  document.querySelectorAll(".laser").forEach(l=>{
-    let y=l.offsetTop-13;
-    l.style.top=y+"px";
+  document.querySelectorAll(".laser").forEach(laser=>{
+    let y=laser.offsetTop-9;
+    laser.style.top=y+"px";
 
-    document.querySelectorAll(".enemy").forEach(e=>{
-      if(hit(l.getBoundingClientRect(),e.getBoundingClientRect())){
-        boom(e.offsetLeft,e.offsetTop);
-        pop(e.offsetLeft,e.offsetTop,"+3 💥");
-
-        e.remove();
-        l.remove();
+    document.querySelectorAll(".enemy").forEach(enemy=>{
+      if(hit(laser.getBoundingClientRect(),enemy.getBoundingClientRect())){
+        enemy.remove();
+        laser.remove();
 
         score+=3;
         coins+=2;
-        localStorage.setItem("driveCoins",coins);
+        pop(enemy.offsetLeft,enemy.offsetTop,"+3 💥");
         updateUI();
       }
     });
 
-    if(y<0)l.remove();
-  });
-}
-
-function movePowers(){
-  document.querySelectorAll(".power").forEach(p=>{
-    let y=p.offsetTop+speed;
-    p.style.top=y+"px";
-
-    if(hit(p.getBoundingClientRect(),player.getBoundingClientRect())){
-      if(p.innerText==="🛡️"){
-        upgrades.shield=true;
-        player.classList.add("shieldGlow");
-        localStorage.setItem("driveUpgrades",JSON.stringify(upgrades));
-        pop(player.offsetLeft,player.offsetTop,"מגן 🛡️");
-      }
-
-      if(p.innerText==="❤️"){
-        lives++;
-        pop(player.offsetLeft,player.offsetTop,"+1 ❤️");
-      }
-
-      if(p.innerText==="⚡"){
-        useNitro();
-        pop(player.offsetLeft,player.offsetTop,"ניטרו ⚡");
-      }
-
-      p.remove();
-      updateUI();
+    if(y<0){
+      laser.remove();
     }
-
-    if(y>window.innerHeight)p.remove();
   });
 }
 
 function endGame(){
   running=false;
-
   clearInterval(enemyTimer);
   clearInterval(coinTimer);
-  clearInterval(powerTimer);
 
   document.getElementById("finalScore").innerText=score;
   document.getElementById("gameOver").style.display="flex";
-}
-
-function openShop(){
-  updateUI();
-  document.getElementById("shop").style.display="block";
-}
-
-function closeShop(){
-  document.getElementById("shop").style.display="none";
-}
-
-function buyUpgrade(type,price){
-  if(coins<price){
-    alert("אין מספיק מטבעות");
-    return;
-  }
-
-  coins-=price;
-
-  if(type==="speed")upgrades.speed++;
-  if(type==="life")upgrades.life++;
-  if(type==="laser")upgrades.laser=true;
-  if(type==="shield")upgrades.shield=true;
-  if(type==="magnet")upgrades.magnet=true;
-
-  localStorage.setItem("driveCoins",coins);
-  localStorage.setItem("driveUpgrades",JSON.stringify(upgrades));
-
-  updateUI();
-  alert("שדרוג נקנה");
 }
 
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft")left=true;
   if(e.key==="ArrowRight")right=true;
   if(e.key===" ")shootLaser();
-  if(e.key==="Shift")useNitro();
 });
 
 document.addEventListener("keyup",e=>{
